@@ -1,0 +1,54 @@
+clc;
+clear;
+close all;
+
+%G=graph([1 1 2 2 4 5 3],[2 4 4 3 5 6 6]);
+%L=full(laplacian(G));
+
+A=[0.5 0.25 0 0.25 0 0
+0.25 0.25 0.25 0.25 0 0
+0 0.25 0.5 0 0 0.25
+0.25 0.25 0 0.25 0.25 0
+0 0 0 0.25 0.5 0.25
+0 0 0.25 0 0.25 0.5];
+
+x0=[7 2 3 4 5 6];
+
+n=200;
+state=zeros(n,6);
+state(1,:)=x0;
+length=size(x0,2);
+p=0.4;
+noise=[];
+aaa=[];
+
+for node=2:n-1
+    b=1/(node^p);
+    xulie=rand_laplace(length,b);
+    aaa(node+1,:)=xulie;%噪声乘衰减因子等于标准差乘衰减因子
+    m=fai(xulie);
+    noise(node+1,:)=m;
+    state(node,:)=A*(state(node-1,:)+m)';
+end
+
+for
+xx=1:1:n;
+figure;
+
+plot(xx,state(:,1),'r');
+hold on;
+plot(xx,state(:,2),'b');
+hold on;
+plot(xx,state(:,3),'g');
+hold on;
+plot(xx,state(:,4),'c');
+hold on;
+plot(xx,state(:,5),'m');
+hold on;
+plot(xx,state(:,6),'y');
+
+figure;
+plot(xx,aaa(:,1));
+
+figure;
+
